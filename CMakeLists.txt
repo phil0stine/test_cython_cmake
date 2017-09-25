@@ -14,6 +14,10 @@ find_package(Cython REQUIRED)
 include(UseCython)
 
 include_directories(include)
+set_source_files_properties(common.pyx PROPERTIES CYTHON_IS_CXX TRUE)
+cython_add_module(common common.pyx)
+target_link_libraries(common ${PCL_LIBRARIES})
+
 set_source_files_properties(test_cython.pyx PROPERTIES CYTHON_IS_CXX TRUE)
-cython_add_module(test_cython common.pyx test_cython.pyx)
+cython_add_module(test_cython test_cython.pyx)
 target_link_libraries(test_cython ${PCL_LIBRARIES})

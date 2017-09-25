@@ -1,9 +1,8 @@
 from common cimport *
 
 class HeaderPy(object):
-    def __init__(self, secs, nsecs):
-        self.secs = secs
-        self.nsecs = nsecs
+    def __init__(self, seq):
+        self.seq = seq
 
 cdef class HeaderWrap:
     def __cinit__(self):
@@ -15,5 +14,3 @@ cdef class HeaderWrap:
         self.py2cpp(h)
     def py2cpp(self, h):
         self.header_cpp.seq = h.seq
-        self.header_cpp.stamp = h.stamp
-        self.header_cpp.frame_id = h.frame_id
