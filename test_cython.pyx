@@ -6,6 +6,7 @@ from common import HeaderPy, HeaderWrap
 cdef extern from "test_cython.hpp" namespace "tstcyt":
     cdef cppclass TestCython:
       TestCython() except +
+      TestCython(int seq) except +
       void add_seqs(const PCLHeader header)
       stdint.uint32_t get_seq()
       void set_seq(stdint.uint32_t seq)
@@ -34,3 +35,21 @@ cdef class TestWrap:
         print 'old seq', self.test_wrap_cpp.get_seq()
         self.test_wrap_cpp.add_seqs(HeaderWrap(h).header_cpp[0])
         print 'new seq', self.test_wrap_cpp.get_seq()
+    def to_py(self):
+        print 'in to_py'
+        return False
+    @staticmethod
+    cdef create(TestCython *tst):
+        cdef TestWrap tstw = TestWrap()
+        tstw.test_wrap_cpp = tst
+        return tstw
+
+
+def test_fn(seq=123):
+  print 'in test'
+#  cdef TestCython *tst = new TestCython(seq)
+  cdef TestCython tst = TestCython(seq)
+#  tst_wrap = TestWrap.create(tst)
+  tst_wrap = TestWrap.create(cython.address(tst))
+  return tst_wrap
+  
